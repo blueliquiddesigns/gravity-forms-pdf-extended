@@ -819,7 +819,7 @@ class Test_Rest_Form_Settings extends Test_Rest {
 		$this->assertContains( 'landscape', $args['orientation']['enum'] );
 
 		$this->assertSame( 'boolean', $args['rtl']['type'] );
-		$this->assertSame( 'yes_no', $args['rtl']['format'] );
+		$this->assertSame( 'yes-no', $args['rtl']['format'] );
 
 		$this->assertContains( 'Standard', $args['format']['enum'] );
 		$this->assertContains( 'PDFX1A', $args['format']['enum'] );

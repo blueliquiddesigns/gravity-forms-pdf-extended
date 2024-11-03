@@ -837,8 +837,13 @@ class Rest_Form_Settings extends WP_REST_Controller {
 			}
 
 			/* Handle Toggle values */
-			if ( $this->has_property_type( 'boolean', $property['type'] ) && ( $property['format'] ?? '' ) === 'yes_no' ) {
+			if ( $this->has_property_type( 'boolean', $property['type'] ) && ( $property['format'] ?? '' ) === 'yes-no' ) {
 				$value = $value === true ? 'Yes' : 'No';
+			}
+
+			/* Handle checkbox values */
+			if ( $this->has_property_type( 'boolean', $property['type'] ) && ( $property['format'] ?? '' ) === 'checkbox' ) {
+				$value = $value === true ? '1' : '';
 			}
 
 			$prepared_pdf[ $id ] = $value;
@@ -1092,9 +1097,15 @@ class Rest_Form_Settings extends WP_REST_Controller {
 					break;
 
 				case 'checkbox':
+					$schema[ $id ]['type']                             = 'boolean';
+					$schema[ $id ]['format']                           = 'checkbox';
+					$schema[ $id ]['default']                          = in_array( $default, [ 'Yes', '1', 1, 'true', true ], true );
+					$schema[ $id ]['arg_options']['sanitize_callback'] = 'rest_sanitize_request_arg';
+				break;
+
 				case 'toggle':
 					$schema[ $id ]['type']                             = 'boolean';
-					$schema[ $id ]['format']                           = 'yes_no';
+					$schema[ $id ]['format']                           = 'yes-no';
 					$schema[ $id ]['default']                          = in_array( $default, [ 'Yes', '1', 'true', true ], true );
 					$schema[ $id ]['arg_options']['sanitize_callback'] = 'rest_sanitize_request_arg';
 
